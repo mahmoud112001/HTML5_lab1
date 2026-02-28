@@ -1,2 +1,3 @@
 REC Text color changer: https://screenrec.com/share/AFaOmQs6Eg
+REC Video player: https://screenrec.com/share/TfuBQMxmaG
 Repo:https://github.com/mahmoud112001/HTML5_lab1
