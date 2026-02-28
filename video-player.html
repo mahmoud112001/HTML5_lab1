@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>video-player </title>
+</head>
+<body>
+
+    
+    <!-- Video -->
+    <video id="myVideo" width="600" src="./ECMADay3Part2Bonus.mp4">
+       
+    </video>
+
+    <br><br>
+
+    <!-- Progress Slider -->
+    <input type="range" id="progressBar" value="0" min="0" step="1">
+
+    <span id="timeDisplay" >00:00 / 00:00</span>
+
+    <br><br>
+
+    <!-- Control Buttons -->
+    <button id="playBtn">Play</button>
+    <button id="stopBtn">Pause</button>
+    <button id="backBtn">-5s</button>
+    <button id="forwardBtn">+5s</button>
+
+    <br><br>
+
+    <!-- Volume Control -->
+    Volume:
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+    <button id="muteBtn">Mute</button>
+
+    <br><br>
+
+    <!-- Speed Control -->
+    Speed:
+    <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+
+<script>
+
+    // Get elements
+    var video = document.getElementById("myVideo");
+    var playBtn = document.getElementById("playBtn");
+    var stopBtn = document.getElementById("stopBtn");
+    var backBtn = document.getElementById("backBtn");
+    var forwardBtn = document.getElementById("forwardBtn");
+    var progressBar = document.getElementById("progressBar");
+    var volumeSlider = document.getElementById("volumeSlider");
+    var muteBtn = document.getElementById("muteBtn");
+    var speedSlider = document.getElementById("speedSlider");
+    var timeDisplay = document.getElementById("timeDisplay");
+
+    var lastVolume = 1; // To store volume before mute
+
+    // When metadata loads, set max value of progress bar
+
+function formatTime(time) {
+
+    var minutes = Math.floor(time / 60);
+    var seconds = Math.floor(time % 60);
+
+    // add leading zero if needed
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+
+    return minutes + ":" + seconds;
+}
+
+  video.onloadedmetadata = function () {
+    progressBar.max = video.duration;
+    timeDisplay.innerHTML =
+        formatTime(0) + " / " + formatTime(video.duration);
+};
+
+    // Play button
+    playBtn.onclick = function () {
+        video.play();
+    };
+
+    // Pause button
+    stopBtn.onclick = function () {
+        video.pause();
+    };
+
+
+//    
+// toggleBtn.onclick = function () {
+//     if (video.paused) {
+//         video.play(); 
+//     } else {
+//         video.pause();
+//     }
+// };
+
+
+    // Forward 5 seconds
+    forwardBtn.onclick = function () {
+        video.currentTime += 5;
+    };
+
+    // Backward 5 seconds
+    backBtn.onclick = function () {
+        video.currentTime -= 5;
+    };
+
+    // Update progress bar while playing
+ video.ontimeupdate = function () {
+    progressBar.value = video.currentTime;
+    timeDisplay.innerHTML =
+        formatTime(video.currentTime) + " / " +
+        formatTime(video.duration);
+};
+    // Change video position manually
+    progressBar.oninput = function () {
+        video.currentTime = progressBar.value;
+    };
+
+    // Volume control
+    volumeSlider.oninput = function () {
+        video.volume = volumeSlider.value;
+        lastVolume = volumeSlider.value;
+    };
+
+    // Mute button
+    muteBtn.onclick = function () {
+
+        if (video.volume > 0) {
+            lastVolume = video.volume;   
+            video.volume = 0;
+            volumeSlider.value = 0;
+        } else {
+            video.volume = lastVolume;  
+            volumeSlider.value = lastVolume;
+        }
+    };
+
+    // Speed control
+    speedSlider.oninput = function () {
+        video.playbackRate = speedSlider.value;
+    };
+
+</script>
+
+</body>
+</html>
